@@ -28,3 +28,5 @@ userList = {
    name: 'sample',
    score: 100
 }
+
+let nameList2: string[];
