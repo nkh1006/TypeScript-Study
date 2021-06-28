@@ -1,5 +1,0 @@
-# tsc typescript_file_name
-## typescript 컴파일
-
-# tsc typescript_file_name --target es6
-## es6 버전으로 typescript 컴파일
