@@ -8,9 +8,6 @@ let objValue: object;
 let symbolValue: symbol;
 let anyValue: any;
 
-// error
-numValue = "1";
-stringValue = 123;
 
 // test 2 (string)
 stringValue = `test ${1 + 1}`;
@@ -28,6 +25,3 @@ anyValue = "123";
 objValue = { name: "sample" };
 objValue = { };
 objValue = new String("hello");
-
-// symbol
-symbolValue = Symbol();
