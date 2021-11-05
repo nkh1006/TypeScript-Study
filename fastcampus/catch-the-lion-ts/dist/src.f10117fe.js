@@ -123,7 +123,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Board = exports.Cell = void 0;
+exports.DeadZone = exports.Board = exports.Cell = void 0;
 
 var Cell =
 /** @class */
@@ -132,7 +132,7 @@ function () {
     this.postion = postion;
     this.piece = piece;
     this.isActive = false;
-    this._el = document.createElement('DIV');
+    this._el = document.createElement('div');
 
     this._el.classList.add('cell');
   }
@@ -173,14 +173,96 @@ var Board =
 function () {
   function Board() {
     this.cells = [];
-    this._el = document.createElement('DIV');
+    this._el = document.createElement('div');
     this._el.className = 'board';
+
+    for (var row = 0; row < 4; row++) {
+      var rowEl = document.createElement('div');
+      rowEl.className = 'row';
+
+      this._el.appendChild(rowEl);
+
+      for (var col = 0; col < 3; col++) {
+        var cell = new Cell({
+          row: row,
+          col: col
+        }, null);
+        this.cells.push(cell);
+        rowEl.appendChild(cell._el);
+      }
+    }
   }
+
+  Board.prototype.render = function () {
+    this.cells.forEach(function (v) {
+      return v.render();
+    });
+  };
 
   return Board;
 }();
 
 exports.Board = Board;
+
+var DeadZone =
+/** @class */
+function () {
+  function DeadZone(type) {
+    this.type = type;
+    this.cells = [];
+    this.deadzoneEl = document.getElementById(this.type + "_deadzone").querySelector('.card-body');
+
+    for (var col = 0; col < 4; col++) {
+      var cell = new Cell({
+        col: col,
+        row: 0
+      }, null);
+      this.cells.push(cell);
+      this.deadzoneEl.appendChild(cell._el);
+    }
+  }
+
+  DeadZone.prototype.put = function (piece) {
+    var emptyCell = this.cells.find(function (v) {
+      return v.getPiece() == null;
+    });
+    emptyCell.put(piece);
+    emptyCell.render();
+  };
+
+  DeadZone.prototype.render = function () {
+    this.cells.forEach(function (v) {
+      return v.render();
+    });
+  };
+
+  return DeadZone;
+}();
+
+exports.DeadZone = DeadZone;
+},{}],"src/Player.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Player = exports.PlayerType = void 0;
+var PlayerType;
+
+(function (PlayerType) {
+  PlayerType["UPPER"] = "UPPER";
+  PlayerType["LOWER"] = "LOWER";
+})(PlayerType = exports.PlayerType || (exports.PlayerType = {}));
+
+var Player =
+/** @class */
+function () {
+  function Player() {}
+
+  return Player;
+}();
+
+exports.Player = Player;
 },{}],"src/Game.ts":[function(require,module,exports) {
 "use strict";
 
@@ -191,11 +273,20 @@ exports.Game = void 0;
 
 var Board_1 = require("./Board");
 
+var Player_1 = require("./Player");
+
 var Game =
 /** @class */
 function () {
   function Game() {
     this.board = new Board_1.Board();
+    this.upperDeadZone = new Board_1.DeadZone('upper');
+    this.lowerDeadZone = new Board_1.DeadZone('lower');
+    this.upperPlayer = new Player_1.Player(Player_1.PlayerType.UPPER);
+    this.lowerPlayer = new Player_1.Player(Player_1.PlayerType.LOWER);
+    var boardContainer = document.querySelector('.board-container');
+    boardContainer.firstChild.remove();
+    boardContainer.appendChild(this.board._el);
   }
 
   return Game;
@@ -204,7 +295,7 @@ function () {
 exports.Game = Game;
 var version = 'v1';
 exports.default = version;
-},{"./Board":"src/Board.ts"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"./Board":"src/Board.ts","./Player":"src/Player.ts"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -324,7 +415,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "7440" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "11422" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

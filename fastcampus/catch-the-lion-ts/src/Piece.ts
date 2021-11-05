@@ -1,3 +1,3 @@
 export interface Piece {
-  render()
+  render(): string;
 }
