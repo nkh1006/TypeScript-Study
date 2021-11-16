@@ -1,0 +1,3 @@
+const last = (arr: number[]) => {
+
+}
