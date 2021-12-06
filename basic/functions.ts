@@ -1,4 +1,4 @@
-function addNumbers(a: number, b: number) {
+function addNumbers(a: number, b: number): number {
   return a + b;
 }
 
@@ -16,8 +16,4 @@ export const fetchData = (url: string): Promise<string> => Promise.resolve(`Data
 
 function introduce(salutation: string, ...names: string[]): string {
   return `${salutation} ${names.join(" ")}`;
-}
-
-export function getName(user: { first: string; last: string; }): string {
-  return `${user?.first ?? 'first'} ${user?.last ?? 'last'}`;
-}
+};
