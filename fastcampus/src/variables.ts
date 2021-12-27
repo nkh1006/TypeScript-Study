@@ -1,27 +1,20 @@
-// type annotation
-let numValue: number;
-let stringValue: string;
-let booleanValue: boolean;
-let undefinedValue: undefined;
-let nullValue: null;
-let objValue: object;
-let symbolValue: symbol;
-let anyValue: any;
+var score1 = 0;
+let score2 = 200;
+const defaultStore = 0;
 
+function outer() {
 
-// test 2 (string)
-stringValue = `test ${1 + 1}`;
+  if (true) {
+    let score = 0;
+  }
 
-booleanValue = true;
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
+      console.log(i);  
+    }, 100);
+  }
 
-// undefined와 null은 어떤 타입에도 넣을 수 있다. (하위 타입)
-numValue = undefined;
+  console.log(score1);
+}
 
-// any타입에는 어떤 타입도 넣을 수 있다. (상위 타입)
-anyValue = 123;
-anyValue = "123";
-
-// object
-objValue = { name: "sample" };
-objValue = { };
-objValue = new String("hello");
+outer();
